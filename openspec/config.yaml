@@ -1,20 +1,26 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  项目：Mya Assistant — 个人多端助手 App
+  技术栈：TypeScript, React Native, Electron, Supabase, Zustand, pnpm monorepo
+  结构：packages/shared（共享层）、packages/mobile（移动端）、packages/desktop（桌面端）
+  后端：Supabase（PostgreSQL + Auth + Realtime + Storage）
+  术语规范见：openspec/specs/glossary/spec.md
+  路线图见：openspec/specs/roadmap/spec.md
+  路线图维护规范见：openspec/specs/roadmap-policy/spec.md
+  技术方案见：Reference/个人助手App技术方案.md
+  使用 Conventional Commits，禁止在 main 分支直接写代码
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - 必须注明所属 Phase（参考 roadmap），格式：Phase: N
+    - 交付物必须是对应 Phase 核心交付物的子集或细化
+    - 如范围超出现有 Phase，需先提案更新 roadmap
+    - 包含 "非目标" 部分，明确边界
+  tasks:
+    - 单个 task 预估不超过 2 小时
+    - task 描述需包含验收标准
+  spec:
+    - roadmap 修改遵循 roadmap-policy 规范
+    - Phase 状态流转可在 Change 中顺带更新
+    - Phase 增删或大幅变更须单独提案

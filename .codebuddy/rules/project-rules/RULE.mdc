@@ -1,0 +1,50 @@
+---
+description: Mya Assistant 项目基础规则
+alwaysApply: true
+enabled: true
+---
+
+# Mya Assistant 项目规则
+
+## 项目简介
+
+个人多端助手 App，管理日程/待办/快速记录，支持多端实时同步。
+
+- 技术栈：TypeScript, React Native, Electron, Supabase, Zustand, pnpm monorepo
+- 后端：Supabase（PostgreSQL + Auth + Realtime + Storage）
+- 结构：`packages/shared`（共享层）、`packages/mobile`（移动端）、`packages/desktop`（桌面端）
+
+## 术语规范
+
+使用项目标准术语，详见 `openspec/specs/glossary/spec.md`。
+
+核心术语：「移动端」= RN 应用、「桌面端」= Electron 应用、「后端」= Supabase 服务、「共享层」= shared 包、「SyncAdapter」= 同步抽象层。
+
+禁止使用：「服务器」「云端」「PC端」「客户端」「CloudBase」等非标准术语。
+
+## Git 工作流
+
+- **禁止在 main 分支直接写代码**，任何实现必须先创建分支
+- 分支命名：`feat/<name>`（新功能）、`fix/<name>`（修复）、`refactor/<name>`（重构）
+- 提交信息使用 Conventional Commits：`feat:` / `fix:` / `refactor:` / `docs:` / `chore:`
+
+## 编码规范
+
+- 语言：TypeScript（严格模式）
+- 缩进：2 空格
+- 引号：单引号
+- 语句末尾：无分号
+- 注释：中文
+- 平台无关逻辑必须放在 `packages/shared`，客户端包仅负责 UI 渲染
+- 所有 Supabase 表必须配置 RLS 策略
+- 环境变量（Supabase URL / Key）禁止硬编码，统一走 `.env` 文件
+
+## OpenSpec 工作流
+
+- 使用 openspec 管理需求和变更
+- 活跃 Change 不带日期前缀，存放在 `openspec/changes/` 下
+- 归档时加日期前缀，移入 `openspec/changes/archive/`
+- 每个 Change 需有 `.openspec.yaml` 文件
+- 每个 proposal 必须注明所属 Phase，交付物须对应 roadmap 的 Phase 交付物
+- Roadmap 维护规范见 `openspec/specs/roadmap-policy/spec.md`
+
