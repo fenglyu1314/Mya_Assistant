@@ -1,5 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
+// 声明 process 类型以兼容非 Node 环境（移动端不使用 process.env）
+declare const process: { env: Record<string, string | undefined> } | undefined
+
 // Supabase 客户端单例（惰性初始化）
 let client: SupabaseClient | null = null
 
@@ -8,8 +11,8 @@ let client: SupabaseClient | null = null
 export function createSupabaseClient(url?: string, anonKey?: string): SupabaseClient {
   if (client) return client
 
-  const supabaseUrl = url || process.env.SUPABASE_URL
-  const supabaseAnonKey = anonKey || process.env.SUPABASE_ANON_KEY
+  const supabaseUrl = url || (typeof process !== 'undefined' ? process?.env?.SUPABASE_URL : undefined)
+  const supabaseAnonKey = anonKey || (typeof process !== 'undefined' ? process?.env?.SUPABASE_ANON_KEY : undefined)
 
   if (!supabaseUrl) {
     throw new Error(
