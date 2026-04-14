@@ -19,6 +19,9 @@ export interface SyncAdapter<T extends BaseModel> {
   // 软删除记录（设置 _deleted: true）
   remove(id: string): Promise<void>
 
-  // 订阅实时变更
-  subscribe(callback: (payload: RealtimePayload<T>) => void): Unsubscribe
+  // 订阅实时变更（onStatus 可选，用于监听连接状态）
+  subscribe(
+    callback: (payload: RealtimePayload<T>) => void,
+    onStatus?: (status: string, err?: Error) => void
+  ): Unsubscribe
 }

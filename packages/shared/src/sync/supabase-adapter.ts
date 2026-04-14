@@ -97,7 +97,11 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
   }
 
   // 订阅实时变更（基于 Supabase Realtime Postgres Changes）
-  subscribe(callback: (payload: RealtimePayload<T>) => void): Unsubscribe {
+  // onStatus 回调可选，用于监听频道连接状态
+  subscribe(
+    callback: (payload: RealtimePayload<T>) => void,
+    onStatus?: (status: string, err?: Error) => void
+  ): Unsubscribe {
     const channelName = `${this.table}-changes-${Date.now()}`
 
     this.channel = this.client
@@ -117,7 +121,10 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
           })
         }
       )
-      .subscribe()
+      .subscribe((status: string, err?: Error) => {
+        // 通知调用者连接状态：SUBSCRIBED / TIMED_OUT / CLOSED / CHANNEL_ERROR
+        onStatus?.(status, err)
+      })
 
     // 返回取消订阅函数
     return () => {

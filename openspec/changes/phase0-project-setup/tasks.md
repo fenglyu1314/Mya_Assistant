@@ -36,9 +36,9 @@
 
 ## 5. 移动端初始化与接入验证
 
-- [ ] 5.1 安装 Android Studio Panda 3，配置 Android SDK（API 34+）和模拟器（Pixel 7, Android 14）。验收：`adb devices` 可列出模拟器或真机
-- [ ] 5.2 在 `packages/mobile/` 下使用 `npx @react-native-community/cli init` 初始化 React Native 项目。验收：`npx react-native run-android` 可在模拟器上运行默认模板
-- [ ] 5.3 配置 `metro.config.js`，添加 `watchFolders` 指向 `packages/shared`，解决 monorepo 路径解析。验收：移动端可 `import { Schedule } from '@mya/shared'` 无报错
-- [ ] 5.4 安装 `@supabase/supabase-js` 依赖，在移动端配置 `.env.local` 并通过共享层初始化 Supabase 客户端。验收：客户端初始化成功，可连接到 Supabase
-- [ ] 5.5 编写验证页面：通过 SupabaseAdapter 对 notes 表执行 create → getAll → update → remove（软删除），确认 CRUD 端到端打通。验收：四个操作均成功，数据在 Supabase Dashboard 可见
-- [ ] 5.6 验证 Realtime 订阅：打开两个移动端实例（或移动端 + Supabase Dashboard SQL），一端写入数据，另一端 subscribe 回调被触发。验收：实时推送延迟 < 2 秒，回调收到正确的变更数据
+- [x] 5.1 安装 Android Studio Panda 3，配置 Android SDK（API 34+）和模拟器（Pixel 7, Android 14）。验收：`adb devices` 可列出模拟器或真机
+- [x] 5.2 在 `packages/mobile/` 下使用 `npx @react-native-community/cli init` 初始化 React Native 项目。验收：`npx react-native run-android` 可在模拟器上运行默认模板
+- [x] 5.3 配置 `metro.config.js`，添加 `watchFolders` 指向 `packages/shared`，解决 monorepo 路径解析。验收：移动端可 `import { Schedule } from '@mya/shared'` 无报错
+- [x] 5.4 安装 `@supabase/supabase-js` 依赖，在移动端配置 `.env.local` 并通过共享层初始化 Supabase 客户端。验收：客户端初始化成功，可连接到 Supabase
+- [x] 5.5 编写验证页面：通过 SupabaseAdapter 对 notes 表执行 create → getAll → update → remove（软删除），确认 CRUD 端到端打通。验收：四个操作均成功，数据在 Supabase Dashboard 可见
+- [x] 5.6 验证 Realtime 订阅：打开两个移动端实例（或移动端 + Supabase Dashboard SQL），一端写入数据，另一端 subscribe 回调被触发。验收：实时推送延迟 < 2 秒，回调收到正确的变更数据
