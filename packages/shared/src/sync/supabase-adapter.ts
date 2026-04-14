@@ -57,7 +57,7 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
   async create(data: Omit<T, 'id' | 'created_at' | 'updated_at' | '_version'>): Promise<T> {
     const { data: created, error } = await this.client
       .from(this.table)
-      .insert(data)
+      .insert(data as any)
       .select()
       .single()
 
@@ -72,7 +72,7 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
   async update(id: string, data: Partial<Omit<T, 'id' | 'user_id' | 'created_at'>>): Promise<T> {
     const { data: updated, error } = await this.client
       .from(this.table)
-      .update(data)
+      .update(data as any)
       .eq('id', id)
       .select()
       .single()
