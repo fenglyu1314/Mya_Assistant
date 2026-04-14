@@ -26,13 +26,13 @@
 
 ## 4. Supabase 后端配置
 
-- [ ] 4.1 注册 Supabase 官方云账号，创建项目（Region 选 Southeast Asia 或延迟最低的区域）。验收：Supabase Dashboard 可访问，获得 Project URL 和 anon key
-- [ ] 4.2 在 Supabase SQL Editor 中创建 `schedules` 表（含所有字段、类型、默认值、外键约束）。验收：表结构与 spec 一致
-- [ ] 4.3 创建 `todos` 表（含自引用 parent_id 外键、schedule_id 外键）。验收：表结构与 spec 一致，外键约束有效
-- [ ] 4.4 创建 `notes` 表。验收：表结构与 spec 一致
-- [ ] 4.5 为三张表创建 `updated_at` 自动更新触发器（moddatetime 或自定义 trigger function）。验收：更新记录后 updated_at 自动刷新
-- [ ] 4.6 为三张表开启 RLS 并配置策略（SELECT / INSERT / UPDATE / DELETE 均需 `auth.uid() = user_id`）。验收：未认证请求被拒绝，已认证用户仅能访问自己的数据
-- [ ] 4.7 为三张表启用 Realtime（Supabase Dashboard → Database → Replication）。验收：Realtime 配置页显示三张表已启用
+- [x] 4.1 注册 Supabase 官方云账号，创建项目（Region 选 Southeast Asia 或延迟最低的区域）。验收：Supabase Dashboard 可访问，获得 Project URL 和 anon key
+- [x] 4.2 在 Supabase SQL Editor 中创建 `schedules` 表（含所有字段、类型、默认值、外键约束）。验收：表结构与 spec 一致
+- [x] 4.3 创建 `todos` 表（含自引用 parent_id 外键、schedule_id 外键）。验收：表结构与 spec 一致，外键约束有效
+- [x] 4.4 创建 `notes` 表。验收：表结构与 spec 一致
+- [x] 4.5 为三张表创建 `updated_at` 自动更新触发器（moddatetime 或自定义 trigger function）。验收：更新记录后 updated_at 自动刷新
+- [x] 4.6 为三张表开启 RLS 并配置策略（SELECT / INSERT / UPDATE / DELETE 均需 `auth.uid() = user_id`）。验收：未认证请求被拒绝，已认证用户仅能访问自己的数据
+- [x] 4.7 为三张表启用 Realtime（Supabase Dashboard → Database → Replication）。验收：Realtime 配置页显示三张表已启用
 
 ## 5. 移动端初始化与接入验证
 
