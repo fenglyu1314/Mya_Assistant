@@ -1,0 +1,12 @@
+{
+  "name": "@mya/desktop",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Mya Assistant 桌面端（Electron）- Phase 0 占位",
+  "dependencies": {
+    "@mya/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

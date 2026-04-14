@@ -1,0 +1,16 @@
+{
+  "name": "mya-assistant",
+  "version": "0.0.1",
+  "private": true,
+  "description": "个人多端助手 App，管理日程/待办/快速记录，支持多端实时同步",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "@mya/shared",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Mya Assistant 共享业务逻辑层",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}
