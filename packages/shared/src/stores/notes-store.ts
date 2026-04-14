@@ -3,6 +3,7 @@ import { SupabaseAdapter } from '../sync/supabase-adapter'
 import { getSupabaseClient } from '../sync/supabase-client'
 import type { Note, NoteType } from '../models/note'
 import type { Unsubscribe, RealtimePayload } from '../sync/types'
+import { useAuthStore } from './auth-store'
 
 // 快速记录状态
 interface NotesState {
@@ -58,6 +59,11 @@ export const useNotesStore = create<NotesState & NotesActions>()((set, get) => (
 
   // 创建快速记录
   createNote: async (content: string, type: NoteType) => {
+    const userId = useAuthStore.getState().user?.id
+    if (!userId) {
+      throw new Error('未登录，无法创建记录')
+    }
+
     const adapter = getNotesAdapter()
     const newNote = await adapter.create({
       content,
@@ -66,7 +72,7 @@ export const useNotesStore = create<NotesState & NotesActions>()((set, get) => (
       pinned: false,
       tags: [],
       _deleted: false,
-      user_id: '', // RLS 会自动填充
+      user_id: userId,
     })
     set((state) => ({
       notes: sortNotes([...state.notes, newNote]),

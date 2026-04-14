@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native'
 import type { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { useAuthStore } from '@mya/shared'
@@ -79,8 +80,21 @@ export function RegisterScreen({ navigation }: Props) {
       const result = await signUp(email.trim(), password)
       if (result.error) {
         setServerError(result.error.message)
+        return
       }
-      // 注册成功后自动登录，RootNavigator 会自动切换到 MainTab
+
+      // Supabase 开启邮箱确认时，注册成功但没有自动登录
+      // 检查 store 中是否已有 user（自动登录的情况）
+      const currentUser = useAuthStore.getState().user
+      if (!currentUser) {
+        // 未自动登录 → 提示用户确认邮箱
+        Alert.alert(
+          '注册成功',
+          '已向您的邮箱发送确认链接，请查收邮件完成验证后再登录。',
+          [{ text: '好的', onPress: () => navigation.navigate('Login') }]
+        )
+      }
+      // 如果已自动登录，RootNavigator 会自动切换到 MainTab
     } catch {
       setServerError('注册失败，请稍后重试')
     } finally {

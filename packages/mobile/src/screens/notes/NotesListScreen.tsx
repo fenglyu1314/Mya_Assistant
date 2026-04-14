@@ -73,6 +73,23 @@ export function NotesListScreen({ navigation }: { navigation: any }) {
     ])
   }, [deleteNote])
 
+  // 长按弹出操作菜单（置顶 + 删除）
+  const handleLongPress = useCallback((item: Note) => {
+    const pinLabel = item.pinned ? '取消置顶' : '置顶'
+    Alert.alert('操作', undefined, [
+      {
+        text: pinLabel,
+        onPress: () => togglePin(item.id),
+      },
+      {
+        text: '删除',
+        style: 'destructive',
+        onPress: () => handleDelete(item.id),
+      },
+      { text: '取消', style: 'cancel' },
+    ])
+  }, [togglePin, handleDelete])
+
   // 渲染分类筛选栏
   const renderFilterBar = () => (
     <View style={[styles.filterBar, { paddingHorizontal: theme.spacing.md }]}>
@@ -112,7 +129,7 @@ export function NotesListScreen({ navigation }: { navigation: any }) {
   const renderNote = ({ item }: { item: Note }) => (
     <Card style={{ marginHorizontal: theme.spacing.md, marginBottom: theme.spacing.sm }}>
       <TouchableOpacity
-        onLongPress={() => handleDelete(item.id)}
+        onLongPress={() => handleLongPress(item)}
         activeOpacity={0.8}
       >
         {/* 头部：分类标签 + 置顶 */}
