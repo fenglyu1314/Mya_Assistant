@@ -12,7 +12,20 @@ enabled: true
 
 - 技术栈：TypeScript, React Native, Electron, Supabase, Zustand, pnpm monorepo
 - 后端：Supabase（PostgreSQL + Auth + Realtime + Storage）
-- 结构：`packages/shared`（共享层）、`packages/mobile`（移动端）、`packages/desktop`（桌面端）
+- 目标平台：
+  - 移动端：Android、Android 墨水屏、iOS（React Native）
+  - 桌面端：Windows、macOS（Electron）
+  - Web 端
+- 结构：`packages/shared`（共享层）、`packages/mobile`（移动端）、`packages/desktop`（桌面端）、`packages/web`（Web 端）
+
+## 开发环境
+
+- 操作系统：Windows
+- IDE：Codebuddy
+- Node.js：v24.14.1
+- pnpm：10.33.0
+- Android Studio：Panda 3 (2025.3.3)
+- Git：已配置
 
 ## 术语规范
 
