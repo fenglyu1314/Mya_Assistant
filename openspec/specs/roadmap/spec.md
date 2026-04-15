@@ -48,7 +48,7 @@
 
 ## Phase 2：核心功能 + 离线同步
 
-**状态**：`active`
+**状态**：`done`
 **前置依赖**：Phase 1
 
 **目标**：完成待办和日程两大核心模块，建立离线优先的同步基础。
@@ -64,7 +64,7 @@
 |--------|-----------|------|
 | `phase2-todo-module` | 待办事项模块 | ✅ done |
 | `phase2-schedule-module` | 日程管理模块 | ✅ done |
-| `phase2-offline-sync` | 离线支持引擎 | 🔵 active |
+| `phase2-offline-sync` | 离线支持引擎 | ✅ done |
 
 **验收标准**：
 - 待办和日程的完整 CRUD 可用，数据与后端实时同步
@@ -122,6 +122,6 @@
 |--------|-----------|---------|------|
 | M0 - 基础设施就绪 | Phase 0 | monorepo + 后端接入验证 | ✅ done |
 | M1 - 首个可用功能 | Phase 1 | Auth + 快速记录 | ✅ done |
-| M2 - 核心功能完整 | Phase 2 | 待办 + 日程 + 离线同步 | 🔵 active |
+| M2 - 核心功能完整 | Phase 2 | 待办 + 日程 + 离线同步 | ✅ done |
 | M3 - 多端覆盖 | Phase 3 | 桌面端 + 电纸书端 | ⚪ planning |
 | M4 - 产品打磨 | Phase 4 | 标签 + 搜索 + 导出 + iOS | ⚪ planning |
