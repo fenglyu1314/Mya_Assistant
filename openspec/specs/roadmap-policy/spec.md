@@ -86,3 +86,15 @@ Roadmap（战略层）
 2. **proposal 的交付物必须是对应 Phase 交付物的子集或细化**
 3. 如果 proposal 的范围超出了任何现有 Phase，需要先提案更新 roadmap
 4. 一个 Phase 可以有多个 Change，每个 Change 覆盖 Phase 交付物的一部分
+
+---
+
+## 六、多 Change 拆分规则
+
+当一个 Phase 计划拆分为多个 Change 时：
+
+1. **命名规范**：Change 统一使用 `phase{N}-{功能名}` 格式命名，确保归属关系清晰
+2. **拆分记录**：在 `roadmap/spec.md` 对应 Phase 下增加「Change 拆分」表格，列出所有计划的 Change
+3. **表格字段**：每个 Change 标注覆盖哪些交付物和当前状态（`⚪ planned` / `🔵 active` / `✅ done`）
+4. **状态同步**：某个 Change 归档时，同步更新拆分表的状态
+5. **Phase 完成**：Phase 所有 Change 归档后，Phase 状态标记为 `done`
