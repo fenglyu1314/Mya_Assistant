@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { v4 as uuidv4 } from 'uuid'
 import { SupabaseAdapter } from '../sync/supabase-adapter'
 import { getSupabaseClient } from '../sync/supabase-client'
-import type { Note, NoteType } from '../models/note'
+import type { Note, NoteType, UpdateNoteInput } from '../models/note'
 import type { Unsubscribe, RealtimePayload } from '../sync/types'
 import type { ILocalDB, IPendingQueue } from '../offline/types'
 import { useAuthStore } from './auth-store'
@@ -18,6 +18,7 @@ interface NotesState {
 interface NotesActions {
   fetchNotes: () => Promise<void>
   createNote: (content: string, type: NoteType) => Promise<void>
+  updateNote: (id: string, data: UpdateNoteInput) => Promise<void>
   deleteNote: (id: string) => Promise<void>
   togglePin: (id: string) => Promise<void>
   setFilter: (filter: NoteType | 'all') => void
@@ -111,7 +112,9 @@ export const useNotesStore = create<NotesState & NotesActions>()((set, get) => (
         updated_at: now,
       }
 
+      console.log('[NotesStore] createNote 离线路径 - 开始写入 SQLite')
       _localDB.upsert('notes', newNote)
+      console.log('[NotesStore] createNote - SQLite upsert 完成，开始入队')
       _pendingQueue.enqueue({
         table_name: 'notes',
         operation: 'create',
@@ -128,11 +131,14 @@ export const useNotesStore = create<NotesState & NotesActions>()((set, get) => (
         base_version: 1,
         created_at: now,
       })
+      console.log('[NotesStore] createNote - 入队完成，更新 Zustand state')
 
       set((state) => ({
         notes: sortNotes([...state.notes, newNote]),
       }))
+      console.log('[NotesStore] createNote - 离线路径完成')
     } else {
+      console.log('[NotesStore] createNote - 走降级路径（_localDB 或 _pendingQueue 为 null）')
       // 降级：直接写后端
       const adapter = getNotesAdapter()
       const newNote = await adapter.create({
@@ -146,6 +152,50 @@ export const useNotesStore = create<NotesState & NotesActions>()((set, get) => (
       })
       set((state) => ({
         notes: sortNotes([...state.notes, newNote]),
+      }))
+    }
+  },
+
+  // 更新快速记录（离线优先）
+  updateNote: async (id: string, data: UpdateNoteInput) => {
+    if (_localDB && _pendingQueue) {
+      const note = _localDB.getById<Note>('notes', id)
+      if (!note) {
+        console.warn('[NotesStore] updateNote - 本地未找到记录 id:', id)
+        return
+      }
+
+      const now = new Date().toISOString()
+      const updated: Note = {
+        ...note,
+        ...data,
+        updated_at: now,
+        _version: note._version + 1,
+      }
+
+      _localDB.upsert('notes', updated)
+      _pendingQueue.enqueue({
+        table_name: 'notes',
+        operation: 'update',
+        record_id: id,
+        payload: JSON.stringify(data),
+        base_version: note._version,
+        created_at: now,
+      })
+
+      set((state) => ({
+        notes: sortNotes(
+          state.notes.map((n) => (n.id === id ? updated : n))
+        ),
+      }))
+    } else {
+      // 降级：直接更新后端
+      const adapter = getNotesAdapter()
+      const updated = await adapter.update(id, data)
+      set((state) => ({
+        notes: sortNotes(
+          state.notes.map((n) => (n.id === id ? updated : n))
+        ),
       }))
     }
   },

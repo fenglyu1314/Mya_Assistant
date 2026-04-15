@@ -17,40 +17,61 @@ const DB_NAME = 'mya_assistant.db'
 // 全局单例
 let engine: OfflineEngine | null = null
 let networkMonitor: RNNetworkMonitor | null = null
+// 初始化锁：防止并发调用时返回未完成初始化的引擎
+let initPromise: Promise<OfflineEngine> | null = null
 
 // 将 op-sqlite 实例封装为 SQLiteExecutor 接口
+// op-sqlite v15：executeSync 是同步方法，execute 是异步方法
+// rows 返回 Array<Record<string, Scalar>>（普通数组，无 .item() 方法）
 function createSQLiteExecutor(): SQLiteExecutor {
   const db = open({ name: DB_NAME })
 
   return {
     execute(sql: string, params?: unknown[]) {
-      const result = db.execute(sql, params as any[])
-      // op-sqlite 返回 { rows: { _array: [...] } }，需要转换
-      const rows: Record<string, unknown>[] = []
-      if (result.rows) {
-        for (let i = 0; i < result.rows.length; i++) {
-          rows.push(result.rows.item(i) as Record<string, unknown>)
-        }
+      try {
+        const result = db.executeSync(sql, params as any[])
+        const rows: Record<string, unknown>[] = result.rows
+          ? (result.rows as Record<string, unknown>[])
+          : []
+        return { rows }
+      } catch (err) {
+        console.error('[SQLiteExecutor] executeSync 失败:', sql, params, err)
+        throw err
       }
-      return { rows }
     },
     async executeAsync(sql: string, params?: unknown[]) {
-      const result = await db.executeAsync(sql, params as any[])
-      const rows: Record<string, unknown>[] = []
-      if (result.rows) {
-        for (let i = 0; i < result.rows.length; i++) {
-          rows.push(result.rows.item(i) as Record<string, unknown>)
-        }
+      try {
+        const result = await db.execute(sql, params as any[])
+        const rows: Record<string, unknown>[] = result.rows
+          ? (result.rows as Record<string, unknown>[])
+          : []
+        return { rows }
+      } catch (err) {
+        console.error('[SQLiteExecutor] executeAsync 失败:', sql, params, err)
+        throw err
       }
-      return { rows }
     },
   }
 }
 
 // 初始化离线引擎
 export async function initOfflineEngine(): Promise<OfflineEngine> {
+  // 已初始化完成 → 直接返回
   if (engine) return engine
+  // 正在初始化中 → 等待同一个 Promise
+  if (initPromise) return initPromise
 
+  initPromise = doInit()
+
+  try {
+    return await initPromise
+  } finally {
+    initPromise = null
+  }
+}
+
+// 实际初始化逻辑（仅被 initOfflineEngine 调用一次）
+async function doInit(): Promise<OfflineEngine> {
   // 1. 创建 op-sqlite 执行器
   const sqliteExecutor = createSQLiteExecutor()
 
@@ -58,7 +79,7 @@ export async function initOfflineEngine(): Promise<OfflineEngine> {
   networkMonitor = new RNNetworkMonitor()
 
   // 3. 创建 OfflineEngine 实例
-  engine = new OfflineEngine()
+  const eng = new OfflineEngine()
 
   // 4. 设置 SupabaseAdapter 映射
   const client = getSupabaseClient()
@@ -68,14 +89,21 @@ export async function initOfflineEngine(): Promise<OfflineEngine> {
   for (const table of tables) {
     adapters[table] = new SupabaseAdapter<BaseModel>(client, table)
   }
-  engine.setAdapters(adapters)
+  eng.setAdapters(adapters)
 
-  // 5. 初始化引擎
-  await engine.initialize({
-    networkMonitor,
-    sqliteExecutor,
-  })
+  // 5. 初始化引擎（如果失败，清理全局状态避免后续调用跳过初始化）
+  try {
+    await eng.initialize({
+      networkMonitor,
+      sqliteExecutor,
+    })
+  } catch (err) {
+    networkMonitor = null
+    throw err
+  }
 
+  // 初始化成功后才赋值全局单例
+  engine = eng
   return engine
 }
 

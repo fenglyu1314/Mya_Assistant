@@ -54,8 +54,9 @@ export class SyncManager implements ISyncManager {
           console.warn(`[SyncManager] 网络错误，操作保留在队列中：${op.table_name}/${op.record_id}`)
           break // 网络不通，停止推送
         }
-        // 其他错误 → 记录日志，跳过该条继续
-        console.error(`[SyncManager] 推送失败：${op.table_name}/${op.record_id}`, err)
+        // 其他错误（外键约束、权限等）→ 记录日志，移出队列避免无限重试
+        console.error(`[SyncManager] 推送失败（已跳过）：${op.table_name}/${op.record_id}`, err)
+        this.pendingQueue.dequeue(op.id)
       }
     }
   }
@@ -211,8 +212,11 @@ export class SyncManager implements ISyncManager {
       try {
         switch (op.operation) {
           case 'create': {
-            const created = await adapter.create(payload)
-            // 用后端返回的完整记录更新本地（含 id、timestamps 等）
+            // 携带本地生成的 id，保证后端 id 与本地一致
+            // 避免子记录的 parent_id 外键引用断裂
+            const createPayload = { ...payload, id: op.record_id }
+            const created = await adapter.create(createPayload)
+            // 用后端返回的完整记录更新本地（含 timestamps 等）
             this.localDB.upsert(op.table_name, created)
             return
           }

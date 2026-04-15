@@ -17,7 +17,7 @@ export type MainTabParamList = {
 // 快速记录相关的嵌套导航
 export type NotesStackParamList = {
   NotesList: undefined
-  CreateNote: undefined
+  CreateNote: { noteId?: string } | undefined
 }
 
 // 待办相关的嵌套导航

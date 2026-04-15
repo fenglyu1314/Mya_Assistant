@@ -10,8 +10,8 @@ export interface SyncAdapter<T extends BaseModel> {
   // 根据 ID 获取单条记录
   getById(id: string): Promise<T | null>
 
-  // 创建记录
-  create(data: Omit<T, 'id' | 'created_at' | 'updated_at' | '_version'>): Promise<T>
+  // 创建记录（可选传入 id，离线优先模式下保持本地/后端 id 一致）
+  create(data: Partial<T>): Promise<T>
 
   // 更新记录
   update(id: string, data: Partial<Omit<T, 'id' | 'user_id' | 'created_at'>>): Promise<T>

@@ -15,6 +15,7 @@ export type {
   TodoTreeNode,
   Note,
   NoteType,
+  UpdateNoteInput,
 } from './models'
 
 // 同步层

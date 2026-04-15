@@ -53,8 +53,8 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
     return data as T
   }
 
-  // 创建记录
-  async create(data: Omit<T, 'id' | 'created_at' | 'updated_at' | '_version'>): Promise<T> {
+  // 创建记录（可选传入 id，离线优先模式下保持本地/后端 id 一致）
+  async create(data: Partial<T>): Promise<T> {
     const { data: created, error } = await this.client
       .from(this.table)
       .insert(data as any)

@@ -141,7 +141,9 @@ export const useTodosStore = create<TodosState & TodosActions>()((set, get) => (
         updated_at: now,
       }
 
+      console.log('[TodosStore] createTodo 离线路径 - 开始写入 SQLite')
       _localDB.upsert('todos', newTodo)
+      console.log('[TodosStore] createTodo - SQLite upsert 完成，开始入队')
       _pendingQueue.enqueue({
         table_name: 'todos',
         operation: 'create',
@@ -163,6 +165,7 @@ export const useTodosStore = create<TodosState & TodosActions>()((set, get) => (
         base_version: 1,
         created_at: now,
       })
+      console.log('[TodosStore] createTodo - 入队完成，更新 Zustand state')
 
       set((state) => {
         const newTodos = [...state.todos, newTodo].sort((a, b) => a.sort_order - b.sort_order)
@@ -205,8 +208,12 @@ export const useTodosStore = create<TodosState & TodosActions>()((set, get) => (
   // 部分更新待办字段（离线优先）
   updateTodo: async (id: string, data: UpdateTodoInput) => {
     if (_localDB && _pendingQueue) {
+      console.log('[TodosStore] updateTodo 离线路径 - id:', id, 'data:', data)
       const todo = _localDB.getById<Todo>('todos', id)
-      if (!todo) return
+      if (!todo) {
+        console.warn('[TodosStore] updateTodo - 本地未找到记录 id:', id)
+        return
+      }
 
       const now = new Date().toISOString()
       const updated: Todo = { ...todo, ...data, updated_at: now }
