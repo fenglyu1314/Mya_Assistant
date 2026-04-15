@@ -63,7 +63,7 @@
 | Change | 覆盖交付物 | 状态 |
 |--------|-----------|------|
 | `phase2-todo-module` | 待办事项模块 | ✅ done |
-| `phase2-schedule-module` | 日程管理模块 | 🔵 active |
+| `phase2-schedule-module` | 日程管理模块 | ✅ done |
 | `phase2-offline-sync` | 离线支持引擎 | ⚪ planned |
 
 **验收标准**：
