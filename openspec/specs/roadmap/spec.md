@@ -64,7 +64,7 @@
 |--------|-----------|------|
 | `phase2-todo-module` | 待办事项模块 | ✅ done |
 | `phase2-schedule-module` | 日程管理模块 | ✅ done |
-| `phase2-offline-sync` | 离线支持引擎 | ⚪ planned |
+| `phase2-offline-sync` | 离线支持引擎 | 🔵 active |
 
 **验收标准**：
 - 待办和日程的完整 CRUD 可用，数据与后端实时同步
