@@ -6,6 +6,8 @@ export type {
   BaseModel,
   Schedule,
   ScheduleStatus,
+  CreateScheduleInput,
+  UpdateScheduleInput,
   Todo,
   TodoPriority,
   CreateTodoInput,
@@ -37,4 +39,4 @@ export type { AuthResult, AuthUser, AuthError } from './auth'
 export { toAuthUser } from './auth'
 
 // 状态管理
-export { useAuthStore, useNotesStore, useTodosStore } from './stores'
+export { useAuthStore, useNotesStore, useTodosStore, useSchedulesStore } from './stores'
