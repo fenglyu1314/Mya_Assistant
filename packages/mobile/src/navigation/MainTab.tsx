@@ -7,13 +7,15 @@ import { NotesListScreen } from '../screens/notes/NotesListScreen'
 import { CreateNoteScreen } from '../screens/notes/CreateNoteScreen'
 import { TodosListScreen } from '../screens/todos/TodosListScreen'
 import { TodoFormScreen } from '../screens/todos/TodoFormScreen'
-import { PlaceholderScreen } from '../screens/PlaceholderScreen'
+import { SchedulesScreen } from '../screens/schedules/SchedulesScreen'
+import { ScheduleFormScreen } from '../screens/schedules/ScheduleFormScreen'
 import { SettingsScreen } from '../screens/settings/SettingsScreen'
-import type { MainTabParamList, NotesStackParamList, TodosStackParamList } from './types'
+import type { MainTabParamList, NotesStackParamList, TodosStackParamList, ScheduleStackParamList } from './types'
 
 const Tab = createBottomTabNavigator<MainTabParamList>()
 const NotesStack = createNativeStackNavigator<NotesStackParamList>()
 const TodosStack = createNativeStackNavigator<TodosStackParamList>()
+const ScheduleStack = createNativeStackNavigator<ScheduleStackParamList>()
 
 // Tab 图标映射
 const TAB_ICONS: Record<keyof MainTabParamList, string> = {
@@ -59,6 +61,20 @@ function TodosStackScreen() {
   )
 }
 
+// Schedule Tab 嵌套导航（日程列表 + 日程表单）
+function ScheduleStackScreen() {
+  return (
+    <ScheduleStack.Navigator screenOptions={{ headerShown: false }}>
+      <ScheduleStack.Screen name="SchedulesList" component={SchedulesScreen} />
+      <ScheduleStack.Screen
+        name="ScheduleForm"
+        component={ScheduleFormScreen}
+        options={{ presentation: 'modal' }}
+      />
+    </ScheduleStack.Navigator>
+  )
+}
+
 export function MainTab() {
   const theme = useTheme()
 
@@ -84,11 +100,7 @@ export function MainTab() {
     >
       <Tab.Screen name="Notes" component={NotesStackScreen} />
       <Tab.Screen name="Todos" component={TodosStackScreen} />
-      <Tab.Screen
-        name="Schedule"
-        component={PlaceholderScreen}
-        initialParams={{ title: '日程管理', description: '即将推出' } as never}
-      />
+      <Tab.Screen name="Schedule" component={ScheduleStackScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   )

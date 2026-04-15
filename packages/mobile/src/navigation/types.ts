@@ -25,3 +25,9 @@ export type TodosStackParamList = {
   TodosList: undefined
   TodoForm: { todoId?: string } | undefined
 }
+
+// 日程相关的嵌套导航
+export type ScheduleStackParamList = {
+  SchedulesList: undefined
+  ScheduleForm: { scheduleId?: string; selectedDate?: string } | undefined
+}
