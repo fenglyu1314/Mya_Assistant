@@ -24,4 +24,8 @@ export interface SyncAdapter<T extends BaseModel> {
     callback: (payload: RealtimePayload<T>) => void,
     onStatus?: (status: string, err?: Error) => void
   ): Unsubscribe
+
+  // 增量拉取：获取指定时间之后更新的所有记录（包含已删除记录）
+  // 可选实现，离线同步模块使用
+  fetchUpdatedSince?(since: string): Promise<T[]>
 }

@@ -96,6 +96,21 @@ export class SupabaseAdapter<T extends BaseModel> implements SyncAdapter<T> {
     }
   }
 
+  // 增量拉取：获取指定时间之后更新的所有记录
+  // 包括 _deleted: true 的记录，以同步删除操作
+  async fetchUpdatedSince(since: string): Promise<T[]> {
+    const { data, error } = await this.client
+      .from(this.table)
+      .select('*')
+      .gt('updated_at', since)
+
+    if (error) {
+      throw new Error(`增量拉取 ${this.table} (since ${since}) 失败：${error.message}`)
+    }
+
+    return (data ?? []) as T[]
+  }
+
   // 订阅实时变更（基于 Supabase Realtime Postgres Changes）
   // onStatus 回调可选，用于监听频道连接状态
   subscribe(
