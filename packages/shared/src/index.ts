@@ -8,6 +8,9 @@ export type {
   ScheduleStatus,
   Todo,
   TodoPriority,
+  CreateTodoInput,
+  UpdateTodoInput,
+  TodoTreeNode,
   Note,
   NoteType,
 } from './models'
@@ -34,4 +37,4 @@ export type { AuthResult, AuthUser, AuthError } from './auth'
 export { toAuthUser } from './auth'
 
 // 状态管理
-export { useAuthStore, useNotesStore } from './stores'
+export { useAuthStore, useNotesStore, useTodosStore } from './stores'

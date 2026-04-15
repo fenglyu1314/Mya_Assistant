@@ -19,3 +19,9 @@ export type NotesStackParamList = {
   NotesList: undefined
   CreateNote: undefined
 }
+
+// 待办相关的嵌套导航
+export type TodosStackParamList = {
+  TodosList: undefined
+  TodoForm: { todoId?: string } | undefined
+}

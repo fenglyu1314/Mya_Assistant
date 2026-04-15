@@ -114,6 +114,6 @@
 |--------|-----------|---------|------|
 | M0 - 基础设施就绪 | Phase 0 | monorepo + 后端接入验证 | ✅ done |
 | M1 - 首个可用功能 | Phase 1 | Auth + 快速记录 | ✅ done |
-| M2 - 核心功能完整 | Phase 2 | 待办 + 日程 + 离线同步 | ⚪ planning |
+| M2 - 核心功能完整 | Phase 2 | 待办 + 日程 + 离线同步 | 🔵 active |
 | M3 - 多端覆盖 | Phase 3 | 桌面端 + 电纸书端 | ⚪ planning |
 | M4 - 产品打磨 | Phase 4 | 标签 + 搜索 + 导出 + iOS | ⚪ planning |

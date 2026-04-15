@@ -5,12 +5,15 @@ import { Text } from 'react-native'
 import { useTheme } from '../theme'
 import { NotesListScreen } from '../screens/notes/NotesListScreen'
 import { CreateNoteScreen } from '../screens/notes/CreateNoteScreen'
+import { TodosListScreen } from '../screens/todos/TodosListScreen'
+import { TodoFormScreen } from '../screens/todos/TodoFormScreen'
 import { PlaceholderScreen } from '../screens/PlaceholderScreen'
 import { SettingsScreen } from '../screens/settings/SettingsScreen'
-import type { MainTabParamList, NotesStackParamList } from './types'
+import type { MainTabParamList, NotesStackParamList, TodosStackParamList } from './types'
 
 const Tab = createBottomTabNavigator<MainTabParamList>()
 const NotesStack = createNativeStackNavigator<NotesStackParamList>()
+const TodosStack = createNativeStackNavigator<TodosStackParamList>()
 
 // Tab 图标映射
 const TAB_ICONS: Record<keyof MainTabParamList, string> = {
@@ -42,6 +45,20 @@ function NotesStackScreen() {
   )
 }
 
+// Todos Tab 嵌套导航（列表 + 表单）
+function TodosStackScreen() {
+  return (
+    <TodosStack.Navigator screenOptions={{ headerShown: false }}>
+      <TodosStack.Screen name="TodosList" component={TodosListScreen} />
+      <TodosStack.Screen
+        name="TodoForm"
+        component={TodoFormScreen}
+        options={{ presentation: 'modal' }}
+      />
+    </TodosStack.Navigator>
+  )
+}
+
 export function MainTab() {
   const theme = useTheme()
 
@@ -66,11 +83,7 @@ export function MainTab() {
       })}
     >
       <Tab.Screen name="Notes" component={NotesStackScreen} />
-      <Tab.Screen
-        name="Todos"
-        component={PlaceholderScreen}
-        initialParams={{ title: '待办事项', description: '即将推出' } as never}
-      />
+      <Tab.Screen name="Todos" component={TodosStackScreen} />
       <Tab.Screen
         name="Schedule"
         component={PlaceholderScreen}
