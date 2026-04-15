@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -21,17 +21,34 @@ const NOTE_TYPES: { key: NoteType; label: string }[] = [
   { key: 'log', label: '日志' },
 ]
 
-export function CreateNoteScreen({ navigation }: { navigation: any }) {
+export function CreateNoteScreen({ navigation, route }: { navigation: any; route: any }) {
   const theme = useTheme()
   const insets = useSafeAreaInsets()
   const createNote = useNotesStore((s) => s.createNote)
+  const updateNote = useNotesStore((s) => s.updateNote)
+  const notes = useNotesStore((s) => s.notes)
+
+  // 判断是否为编辑模式
+  const noteId = route.params?.noteId as string | undefined
+  const isEdit = !!noteId
+
+  // 查找要编辑的记录
+  const existingNote = isEdit ? notes.find((n) => n.id === noteId) : undefined
 
   const [content, setContent] = useState('')
   const [type, setType] = useState<NoteType>('memo')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const handleCreate = async () => {
+  // 编辑模式：初始化表单数据
+  useEffect(() => {
+    if (existingNote) {
+      setContent(existingNote.content)
+      setType(existingNote.type)
+    }
+  }, [existingNote])
+
+  const handleSave = async () => {
     setError('')
 
     if (!content.trim()) {
@@ -41,10 +58,18 @@ export function CreateNoteScreen({ navigation }: { navigation: any }) {
 
     setLoading(true)
     try {
-      await createNote(content.trim(), type)
+      if (isEdit && noteId) {
+        await updateNote(noteId, {
+          content: content.trim(),
+          type,
+        })
+      } else {
+        await createNote(content.trim(), type)
+      }
       navigation.goBack()
-    } catch {
-      setError('创建失败，请稍后重试')
+    } catch (err) {
+      console.error(`[CreateNote] ${isEdit ? '保存' : '创建'}失败:`, err)
+      setError(`${isEdit ? '保存' : '创建'}失败: ${err instanceof Error ? err.message : String(err)}`)
     } finally {
       setLoading(false)
     }
@@ -79,7 +104,7 @@ export function CreateNoteScreen({ navigation }: { navigation: any }) {
             fontWeight: '600',
           }}
         >
-          新建记录
+          {isEdit ? '编辑记录' : '新建记录'}
         </Text>
         <View style={{ width: 40 }} />
       </View>
@@ -153,8 +178,8 @@ export function CreateNoteScreen({ navigation }: { navigation: any }) {
         ) : null}
 
         <Button
-          title="创建"
-          onPress={handleCreate}
+          title={isEdit ? '保存' : '创建'}
+          onPress={handleSave}
           loading={loading}
           style={{ marginTop: theme.spacing.lg }}
         />

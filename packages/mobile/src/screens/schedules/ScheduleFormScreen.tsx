@@ -163,8 +163,9 @@ export function ScheduleFormScreen({ navigation, route }: ScheduleFormScreenProp
         })
       }
       navigation.goBack()
-    } catch {
-      Alert.alert('错误', isEdit ? '保存失败，请重试' : '创建失败，请重试')
+    } catch (err) {
+      console.error('[ScheduleForm] 保存失败:', err)
+      Alert.alert('错误', `${isEdit ? '保存' : '创建'}失败: ${err instanceof Error ? err.message : String(err)}`)
     } finally {
       setSaving(false)
     }

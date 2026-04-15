@@ -129,6 +129,7 @@ export function NotesListScreen({ navigation }: { navigation: any }) {
   const renderNote = ({ item }: { item: Note }) => (
     <Card style={{ marginHorizontal: theme.spacing.md, marginBottom: theme.spacing.sm }}>
       <TouchableOpacity
+        onPress={() => navigation.navigate('CreateNote', { noteId: item.id })}
         onLongPress={() => handleLongPress(item)}
         activeOpacity={0.8}
       >

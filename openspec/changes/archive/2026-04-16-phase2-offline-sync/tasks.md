@@ -6,7 +6,7 @@
 
 ## Task 1：离线模块类型定义
 
-**状态**: `pending`
+**状态**: `done`
 
 **描述**：定义离线模块所需的所有 TypeScript 类型和接口。
 
@@ -30,7 +30,7 @@
 
 ## Task 2：LocalDB — SQLite 抽象层
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 1
 
 **描述**：实现平台无关的本地数据库抽象层，包括 schema 初始化、通用 CRUD、操作队列管理和同步元数据管理。
@@ -61,7 +61,7 @@
 
 ## Task 3：PendingQueue — 操作队列
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 2
 
 **描述**：实现操作队列的入队、出队和合并优化逻辑。
@@ -89,7 +89,7 @@
 
 ## Task 4：SupabaseAdapter 扩展
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 1
 
 **描述**：为 SupabaseAdapter 新增增量拉取方法。
@@ -113,7 +113,7 @@
 
 ## Task 5：SyncManager — 推送/拉取/冲突合并
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 2, Task 3, Task 4
 
 **描述**：实现核心同步协调器，包括 push、pull 和字段级冲突合并。
@@ -151,7 +151,7 @@
 
 ## Task 6：NetworkMonitor 接口 + 移动端实现
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 1
 
 **描述**：定义网络监听抽象接口，并为移动端提供基于 NetInfo 的实现。
@@ -178,7 +178,7 @@
 
 ## Task 7：OfflineEngine 统一入口
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 2, Task 3, Task 5, Task 6
 
 **描述**：组装所有离线模块，提供统一初始化和 API。
@@ -207,7 +207,7 @@
 
 ## Task 8：安装依赖 + op-sqlite 集成
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 6
 
 **描述**：安装必要的 npm 包并完成 op-sqlite 在移动端的集成配置。
@@ -232,7 +232,7 @@
 
 ## Task 9：Store 层改造 — notes-store
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 7, Task 8
 
 **描述**：改造 notes-store，使读写操作走本地 SQLite。
@@ -257,7 +257,7 @@
 
 ## Task 10：Store 层改造 — todos-store
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 7, Task 8
 
 **描述**：改造 todos-store，使读写操作走本地 SQLite。
@@ -282,7 +282,7 @@
 
 ## Task 11：Store 层改造 — schedules-store
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 7, Task 8
 
 **描述**：改造 schedules-store，使读写操作走本地 SQLite。
@@ -307,7 +307,7 @@
 
 ## Task 12：移动端初始化集成
 
-**状态**: `pending`
+**状态**: `done`
 **依赖**: Task 9, Task 10, Task 11
 
 **描述**：将离线引擎集成到移动端应用启动流程中。

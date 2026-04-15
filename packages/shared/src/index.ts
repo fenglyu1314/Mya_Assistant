@@ -15,6 +15,7 @@ export type {
   TodoTreeNode,
   Note,
   NoteType,
+  UpdateNoteInput,
 } from './models'
 
 // 同步层
@@ -40,3 +41,20 @@ export { toAuthUser } from './auth'
 
 // 状态管理
 export { useAuthStore, useNotesStore, useTodosStore, useSchedulesStore } from './stores'
+
+// 离线同步引擎
+export { OfflineEngine, LocalDB, PendingQueue, SyncManager } from './offline'
+export type {
+  SyncableTable,
+  OperationType,
+  PendingOperation,
+  SyncStatus,
+  ConflictResult,
+  SQLiteExecutor,
+  ILocalDB,
+  IPendingQueue,
+  ISyncManager,
+  INetworkMonitor,
+  IOfflineEngine,
+  OfflineEngineConfig,
+} from './offline'

@@ -11,3 +11,8 @@ export interface Note extends BaseModel {
   pinned: boolean
   tags: string[]
 }
+
+// 更新快速记录输入类型（所有字段可选）
+export type UpdateNoteInput = Partial<Pick<Note,
+  'content' | 'type' | 'images' | 'pinned' | 'tags'
+>>
