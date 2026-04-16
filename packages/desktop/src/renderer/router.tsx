@@ -4,10 +4,10 @@ import { App, AuthGuard, GuestGuard } from './App'
 import { LoginPage } from './pages/LoginPage'
 import { RegisterPage } from './pages/RegisterPage'
 import { MainLayout } from './components/layout/MainLayout'
-import { NotesPlaceholder } from './pages/NotesPlaceholder'
-import { TodosPlaceholder } from './pages/TodosPlaceholder'
-import { SchedulesPlaceholder } from './pages/SchedulesPlaceholder'
-import { SettingsPlaceholder } from './pages/SettingsPlaceholder'
+import { NotesPage } from './pages/NotesPage'
+import { TodosPage } from './pages/TodosPage'
+import { SchedulesPage } from './pages/SchedulesPage'
+import { SettingsPage } from './pages/SettingsPage'
 
 export const router = createMemoryRouter([
   {
@@ -29,10 +29,10 @@ export const router = createMemoryRouter([
           {
             element: <MainLayout />,
             children: [
-              { path: 'notes', element: <NotesPlaceholder /> },
-              { path: 'todos', element: <TodosPlaceholder /> },
-              { path: 'schedules', element: <SchedulesPlaceholder /> },
-              { path: 'settings', element: <SettingsPlaceholder /> },
+              { path: 'notes', element: <NotesPage /> },
+              { path: 'todos', element: <TodosPage /> },
+              { path: 'schedules', element: <SchedulesPage /> },
+              { path: 'settings', element: <SettingsPage /> },
             ],
           },
         ],
