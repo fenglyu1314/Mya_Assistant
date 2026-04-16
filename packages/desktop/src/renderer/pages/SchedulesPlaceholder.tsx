@@ -1,3 +1,4 @@
+import React from 'react'
 import { Calendar } from 'lucide-react'
 
 export function SchedulesPlaceholder() {

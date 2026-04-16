@@ -1,3 +1,4 @@
+import React from 'react'
 import { Settings } from 'lucide-react'
 
 export function SettingsPlaceholder() {

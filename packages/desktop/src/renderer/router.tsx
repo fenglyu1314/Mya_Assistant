@@ -1,3 +1,4 @@
+import React from 'react'
 import { createMemoryRouter, Navigate } from 'react-router-dom'
 import { App, AuthGuard, GuestGuard } from './App'
 import { LoginPage } from './pages/LoginPage'

@@ -1,3 +1,4 @@
+import React from 'react'
 import { CheckSquare } from 'lucide-react'
 
 export function TodosPlaceholder() {

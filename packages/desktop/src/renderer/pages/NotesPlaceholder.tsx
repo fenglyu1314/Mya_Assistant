@@ -1,3 +1,4 @@
+import React from 'react'
 import { StickyNote } from 'lucide-react'
 
 export function NotesPlaceholder() {

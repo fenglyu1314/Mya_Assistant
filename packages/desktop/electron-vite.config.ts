@@ -2,7 +2,6 @@ import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -21,7 +20,10 @@ export default defineConfig({
   },
   renderer: {
     root: resolve(__dirname, 'src/renderer'),
-    plugins: [react(), tailwindcss()],
+    plugins: [react()],
+    css: {
+      postcss: resolve(__dirname, '.'),
+    },
     resolve: {
       alias: {
         '@renderer': resolve(__dirname, 'src/renderer'),
