@@ -100,7 +100,46 @@ Archive a completed change in the experimental workflow.
 
    **IMPORTANT**: This step is required by roadmap-policy §6.4 and §6.5. Do NOT skip it.
 
-8. **Display summary**
+8. **Git: Commit, merge to main, and clean up (MANDATORY)**
+
+   After archive and roadmap sync, handle Git operations:
+
+   a. **Check current branch**:
+      ```bash
+      git branch --show-current
+      ```
+
+   b. **Commit all archive changes on feature branch**:
+      ```bash
+      git add -A
+      git commit -m "chore: archive change <change-name>"
+      ```
+
+   c. **Merge feature branch into main** (using `--no-ff` to preserve branch topology):
+      ```bash
+      git checkout main
+      git merge --no-ff feat/<change-name> --no-edit
+      ```
+
+   d. **Delete feature branch** (already merged):
+      ```bash
+      git branch -d feat/<change-name>
+      ```
+
+   e. **Push to remote**:
+      - Use **AskUserQuestion tool** to ask:
+        > "归档完成。是否推送到远程仓库？（`git push origin main`）"
+      - If user confirms: `git push origin main`
+      - If user declines: skip push, announce "可以稍后手动 `git push`"
+
+   **Edge cases**:
+   - If not on `feat/<change-name>` branch: commit on current branch, then checkout main and merge current branch
+   - If merge conflicts occur: **STOP**, report the conflict to user, and suggest manual resolution. Do NOT force-resolve conflicts.
+   - If on `main` already (no feature branch): just commit the archive changes directly — this can happen if user manually merged before archiving
+
+   **IMPORTANT**: The `--no-ff` flag ensures merge commits always appear in the Git graph, making it easy to trace which commits belong to which Change.
+
+9. **Display summary**
 
    Show archive completion summary including:
    - Change name
@@ -120,6 +159,7 @@ Archive a completed change in the experimental workflow.
 **Archived to:** openspec/changes/archive/YYYY-MM-DD-<name>/
 **Specs:** ✓ Synced to main specs (or "No delta specs" or "Sync skipped")
 **Roadmap:** ✓ Change marked as done in Phase N split table (Phase status: active/done)
+**Git:** ✓ Merged `feat/<change-name>` → `main` (--no-ff), branch deleted (Pushed / Not pushed)
 
 All artifacts complete. All tasks complete.
 ```
@@ -135,3 +175,7 @@ All artifacts complete. All tasks complete.
 - If delta specs exist, always run the sync assessment and show the combined summary before prompting
 - MUST update roadmap split table after archive (Step 7) - never skip this step
 - If all Changes in a Phase are done, update Phase status to `done`
+- MUST handle Git merge after archive (Step 8) - use `--no-ff` to preserve branch topology
+- NEVER force-resolve merge conflicts; stop and report to user
+- Always delete the merged feature branch to keep the branch list clean
+- If push fails or is declined, clearly inform user how to push later

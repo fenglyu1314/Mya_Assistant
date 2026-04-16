@@ -48,7 +48,32 @@ When ready to implement, run /opsx:apply
    ```
    This creates a scaffolded change at `openspec/changes/<name>/` with `.openspec.yaml`.
 
-4. **Sync roadmap (if this is the first Change of a Phase)**
+4. **Create Git feature branch (MANDATORY)**
+
+   After the change directory is created, set up the corresponding Git branch:
+
+   a. **Check current branch**:
+      ```bash
+      git branch --show-current
+      ```
+
+   b. **If on `main`**:
+      - Pull latest: `git pull origin main`
+      - Create and switch to feature branch: `git checkout -b feat/<change-name>`
+      - Announce: "已创建并切换到分支 `feat/<change-name>`"
+
+   c. **If already on `feat/<change-name>`** (matching the change being proposed):
+      - This is fine — announce: "当前已在分支 `feat/<change-name>` 上"
+
+   d. **If on another feature branch** (e.g., `feat/other-thing`):
+      - **WARNING**: Use **AskUserQuestion tool** to alert the user:
+        > "当前在分支 `feat/other-thing` 上，而不是 `main`。要创建 `feat/<change-name>` 分支，建议先切回 `main`。是否自动执行 `git checkout main && git pull && git checkout -b feat/<change-name>`？"
+      - If user confirms, execute the branch switch
+      - If user declines, proceed on current branch with a warning
+
+   **IMPORTANT**: This step ensures every Change has a dedicated feature branch, matching the project rule "禁止在 main 分支直接写代码".
+
+5. **Sync roadmap (if this is the first Change of a Phase)**
 
    Check the roadmap read in Step 1:
    - If the Change's Phase does **not yet** have a「Change 拆分」table, this is the first Change — you MUST add the table now
@@ -60,7 +85,7 @@ When ready to implement, run /opsx:apply
 
    **IMPORTANT**: This step is required by roadmap-policy §5.5 and §6. Do NOT skip it.
 
-5. **Get the artifact build order**
+6. **Get the artifact build order**
    ```bash
    openspec status --change "<name>" --json
    ```
@@ -68,7 +93,7 @@ When ready to implement, run /opsx:apply
    - `applyRequires`: array of artifact IDs needed before implementation (e.g., `["tasks"]`)
    - `artifacts`: list of all artifacts with their status and dependencies
 
-6. **Create artifacts in sequence until apply-ready**
+7. **Create artifacts in sequence until apply-ready**
 
    Use the **TodoWrite tool** to track progress through the artifacts.
 
@@ -100,7 +125,7 @@ When ready to implement, run /opsx:apply
       - Use **AskUserQuestion tool** to clarify
       - Then continue with creation
 
-7. **Show final status**
+8. **Show final status**
    ```bash
    openspec status --change "<name>"
    ```

@@ -24,7 +24,36 @@ Implement tasks from an OpenSpec change.
 
    Always announce: "Using change: <name>" and how to override (e.g., `/opsx:apply <other>`).
 
-2. **Check status to understand the schema**
+2. **Verify Git branch (MANDATORY)**
+
+   Before starting any implementation, ensure you are on the correct feature branch:
+
+   a. **Check current branch**:
+      ```bash
+      git branch --show-current
+      ```
+
+   b. **If on `feat/<change-name>`** (matching the selected change):
+      - Good — announce: "当前在分支 `feat/<change-name>` 上，继续实现"
+
+   c. **If on `main`**:
+      - Check if `feat/<change-name>` branch already exists:
+        ```bash
+        git branch --list "feat/<change-name>"
+        ```
+      - If branch exists: switch to it — `git checkout feat/<change-name>`
+      - If branch does NOT exist: create it — `git pull origin main && git checkout -b feat/<change-name>`
+      - Announce the action taken
+
+   d. **If on another feature branch** (e.g., `feat/other-thing`):
+      - **WARNING**: Use **AskUserQuestion tool** to alert the user:
+        > "当前在分支 `feat/other-thing` 上，但即将实现的 Change 是 `<change-name>`。是否切换到 `feat/<change-name>` 分支？"
+      - If user confirms, switch (create if needed)
+      - If user declines, proceed with a warning
+
+   **IMPORTANT**: Code must NEVER be implemented on `main` directly. This step enforces the project rule "禁止在 main 分支直接写代码".
+
+3. **Check status to understand the schema**
    ```bash
    openspec status --change "<name>" --json
    ```
@@ -32,7 +61,7 @@ Implement tasks from an OpenSpec change.
    - `schemaName`: The workflow being used (e.g., "spec-driven")
    - Which artifact contains the tasks (typically "tasks" for spec-driven, check status for others)
 
-3. **Get apply instructions**
+4. **Get apply instructions**
 
    ```bash
    openspec instructions apply --change "<name>" --json
@@ -49,14 +78,14 @@ Implement tasks from an OpenSpec change.
    - If `state: "all_done"`: congratulate, suggest archive
    - Otherwise: proceed to implementation
 
-4. **Read context files**
+5. **Read context files**
 
    Read the files listed in `contextFiles` from the apply instructions output.
    The files depend on the schema being used:
    - **spec-driven**: proposal, specs, design, tasks
    - Other schemas: follow the contextFiles from CLI output
 
-5. **Show current progress**
+6. **Show current progress**
 
    Display:
    - Schema being used
@@ -64,7 +93,7 @@ Implement tasks from an OpenSpec change.
    - Remaining tasks overview
    - Dynamic instruction from CLI
 
-6. **Implement tasks (loop until done or blocked)**
+7. **Implement tasks (loop until done or blocked)**
 
    For each pending task:
    - Show which task is being worked on
@@ -79,7 +108,7 @@ Implement tasks from an OpenSpec change.
    - Error or blocker encountered → report and wait for guidance
    - User interrupts
 
-7. **On completion or pause, show status**
+8. **On completion or pause, show status**
 
    Display:
    - Tasks completed this session
