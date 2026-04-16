@@ -54,6 +54,6 @@
 
 - [x] 6.1 全量 TypeScript 类型检查：运行 `pnpm typecheck` 确保无类型错误。验收：`tsc --noEmit` 退出码为 0。
 
-- [ ] 6.2 桌面端 dev 启动验证：运行 `pnpm desktop:dev`，手动验证登录后四个功能页面均可正常访问和使用。验收：快速记录创建/筛选/置顶/删除、待办创建/编辑/完成/删除/子任务展开、日程创建/编辑/取消/恢复/删除/月历联动、设置登出 — 均无崩溃和控制台报错。
+- [x] 6.2 桌面端 dev 启动验证：运行 `pnpm desktop:dev`，手动验证登录后四个功能页面均可正常访问和使用。验收：快速记录创建/筛选/置顶/删除、待办创建/编辑/完成/删除/子任务展开、日程创建/编辑/取消/恢复/删除/月历联动、设置登出 — 均无崩溃和控制台报错。
 
 - [x] 6.3 清理遗留占位组件：删除 `NotesPlaceholder.tsx`、`TodosPlaceholder.tsx`、`SchedulesPlaceholder.tsx`、`SettingsPlaceholder.tsx` 四个文件。验收：项目中无未使用的占位组件文件。

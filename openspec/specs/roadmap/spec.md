@@ -93,7 +93,7 @@
 | Change | 覆盖交付物 | 状态 |
 |--------|-----------|------|
 | `phase3-desktop-skeleton` | Electron 桌面端项目搭建 + 基础 UI 框架 + 认证 + 导航 | ✅ done |
-| `phase3-desktop-features` | 桌面端功能页面（快速记录 + 待办 + 日程） | 🔵 active |
+| `phase3-desktop-features` | 桌面端功能页面（快速记录 + 待办 + 日程） | ✅ done |
 | `phase3-eink-theme` | 电纸书端 E-Ink 适配主题 + 三端同步联调 | ⚪ planned |
 
 **验收标准**：
