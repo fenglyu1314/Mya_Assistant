@@ -15,7 +15,15 @@ Archive a completed change in the experimental workflow.
 
 **Steps**
 
-1. **If no change name provided, prompt for selection**
+1. **Read project policies and roadmap (MANDATORY first step)**
+
+   Before any other action, read the following files:
+   - `openspec/specs/roadmap-policy/spec.md` — 了解归档时的 roadmap 状态同步规则
+   - `openspec/specs/roadmap/spec.md` — 了解当前 Phase 状态和 Change 拆分表
+
+   **IMPORTANT**: This step is non-negotiable. The archive process MUST update the roadmap's Change split table and potentially the Phase status.
+
+2. **If no change name provided, prompt for selection**
 
    Run `openspec list --json` to get available changes. Use the **AskUserQuestion tool** to let the user select.
 
@@ -24,7 +32,7 @@ Archive a completed change in the experimental workflow.
 
    **IMPORTANT**: Do NOT guess or auto-select a change. Always let the user choose.
 
-2. **Check artifact completion status**
+3. **Check artifact completion status**
 
    Run `openspec status --change "<name>" --json` to check artifact completion.
 
@@ -37,7 +45,7 @@ Archive a completed change in the experimental workflow.
    - Use **AskUserQuestion tool** to confirm user wants to proceed
    - Proceed if user confirms
 
-3. **Check task completion status**
+4. **Check task completion status**
 
    Read the tasks file (typically `tasks.md`) to check for incomplete tasks.
 
@@ -50,7 +58,7 @@ Archive a completed change in the experimental workflow.
 
    **If no tasks file exists:** Proceed without task-related warning.
 
-4. **Assess delta spec sync state**
+5. **Assess delta spec sync state**
 
    Check for delta specs at `openspec/changes/<name>/specs/`. If none exist, proceed without sync prompt.
 
@@ -65,7 +73,7 @@ Archive a completed change in the experimental workflow.
 
    If user chooses sync, use Task tool (subagent_type: "general-purpose", prompt: "Use Skill tool to invoke openspec-sync-specs for change '<name>'. Delta spec analysis: <include the analyzed delta spec summary>"). Proceed to archive regardless of choice.
 
-5. **Perform the archive**
+6. **Perform the archive**
 
    Create the archive directory if it doesn't exist:
    ```bash
@@ -82,13 +90,24 @@ Archive a completed change in the experimental workflow.
    mv openspec/changes/<name> openspec/changes/archive/YYYY-MM-DD-<name>
    ```
 
-6. **Display summary**
+7. **Sync roadmap after archive (MANDATORY)**
+
+   Update `openspec/specs/roadmap/spec.md`:
+   - In the Phase's「Change 拆分」table, update the archived Change's status from `🔵 active` → `✅ done`
+   - Check if **all** Changes in the Phase are now `✅ done`:
+     - If yes: update Phase status to `done`, update milestone summary table accordingly
+     - If no: leave Phase status as `active`
+
+   **IMPORTANT**: This step is required by roadmap-policy §6.4 and §6.5. Do NOT skip it.
+
+8. **Display summary**
 
    Show archive completion summary including:
    - Change name
    - Schema that was used
    - Archive location
    - Whether specs were synced (if applicable)
+   - Roadmap update summary (Change status in split table, Phase status if changed)
    - Note about any warnings (incomplete artifacts/tasks)
 
 **Output On Success**
@@ -100,11 +119,13 @@ Archive a completed change in the experimental workflow.
 **Schema:** <schema-name>
 **Archived to:** openspec/changes/archive/YYYY-MM-DD-<name>/
 **Specs:** ✓ Synced to main specs (or "No delta specs" or "Sync skipped")
+**Roadmap:** ✓ Change marked as done in Phase N split table (Phase status: active/done)
 
 All artifacts complete. All tasks complete.
 ```
 
 **Guardrails**
+- Always read roadmap-policy and roadmap before starting (Step 1)
 - Always prompt for change selection if not provided
 - Use artifact graph (openspec status --json) for completion checking
 - Don't block archive on warnings - just inform and confirm
@@ -112,3 +133,5 @@ All artifacts complete. All tasks complete.
 - Show clear summary of what happened
 - If sync is requested, use openspec-sync-specs approach (agent-driven)
 - If delta specs exist, always run the sync assessment and show the combined summary before prompting
+- MUST update roadmap split table after archive (Step 7) - never skip this step
+- If all Changes in a Phase are done, update Phase status to `done`

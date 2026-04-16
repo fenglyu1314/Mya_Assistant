@@ -77,7 +77,7 @@
 
 ## Phase 3：桌面端 + 电纸书端适配
 
-**状态**：`planning`
+**状态**：`active`
 **前置依赖**：Phase 2（离线同步完成后再扩展端）
 
 **目标**：扩展到桌面端和电纸书端，验证共享层的跨端复用能力。
@@ -87,6 +87,14 @@
 - 桌面端 UI（宽屏布局、Tailwind CSS + shadcn/ui）
 - 电纸书端 E-Ink 适配主题（去动画、高对比度、大触摸区域、简化布局）
 - 三端同步联调通过
+
+**Change 拆分**：
+
+| Change | 覆盖交付物 | 状态 |
+|--------|-----------|------|
+| `phase3-desktop-skeleton` | Electron 桌面端项目搭建 + 基础 UI 框架 + 认证 + 导航 | 🔵 active |
+| `phase3-desktop-features` | 桌面端功能页面（快速记录 + 待办 + 日程） | ⚪ planned |
+| `phase3-eink-theme` | 电纸书端 E-Ink 适配主题 + 三端同步联调 | ⚪ planned |
 
 **验收标准**：
 - 桌面端可正常使用全部功能（快速记录 + 待办 + 日程）
@@ -123,5 +131,5 @@
 | M0 - 基础设施就绪 | Phase 0 | monorepo + 后端接入验证 | ✅ done |
 | M1 - 首个可用功能 | Phase 1 | Auth + 快速记录 | ✅ done |
 | M2 - 核心功能完整 | Phase 2 | 待办 + 日程 + 离线同步 | ✅ done |
-| M3 - 多端覆盖 | Phase 3 | 桌面端 + 电纸书端 | ⚪ planning |
+| M3 - 多端覆盖 | Phase 3 | 桌面端 + 电纸书端 | 🔵 active |
 | M4 - 产品打磨 | Phase 4 | 标签 + 搜索 + 导出 + iOS | ⚪ planning |

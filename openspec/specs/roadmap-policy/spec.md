@@ -86,6 +86,7 @@ Roadmap（战略层）
 2. **proposal 的交付物必须是对应 Phase 交付物的子集或细化**
 3. 如果 proposal 的范围超出了任何现有 Phase，需要先提案更新 roadmap
 4. 一个 Phase 可以有多个 Change，每个 Change 覆盖 Phase 交付物的一部分
+5. **创建 Phase 的首个 Change 时，必须同步更新 `roadmap/spec.md`**：将 Phase 状态从 `planning` 更新为 `active`，并按第六章规则添加「Change 拆分」表格。此步骤是 propose 流程的前置条件，不得跳过
 
 ---
 

@@ -24,7 +24,16 @@ When ready to implement, run /opsx:apply
 
 **Steps**
 
-1. **If no clear input provided, ask what they want to build**
+1. **Read project policies and roadmap (MANDATORY first step)**
+
+   Before any other action, read the following files to understand project conventions:
+   - `openspec/specs/roadmap-policy/spec.md` — 了解 roadmap 维护规则、Change 拆分规则、propose 与 roadmap 的关联要求
+   - `openspec/specs/roadmap/spec.md` — 了解当前各 Phase 状态、已有的 Change 拆分计划
+   - `openspec/specs/glossary/spec.md` — 了解项目术语规范（如存在）
+
+   **IMPORTANT**: This step is non-negotiable. These policies define constraints that MUST be followed throughout the propose process (e.g., Phase naming conventions, roadmap sync requirements, terminology).
+
+2. **If no clear input provided, ask what they want to build**
 
    Use the **AskUserQuestion tool** (open-ended, no preset options) to ask:
    > "What change do you want to work on? Describe what you want to build or fix."
@@ -33,13 +42,25 @@ When ready to implement, run /opsx:apply
 
    **IMPORTANT**: Do NOT proceed without understanding what the user wants to build.
 
-2. **Create the change directory**
+3. **Create the change directory**
    ```bash
    openspec new change "<name>"
    ```
    This creates a scaffolded change at `openspec/changes/<name>/` with `.openspec.yaml`.
 
-3. **Get the artifact build order**
+4. **Sync roadmap (if this is the first Change of a Phase)**
+
+   Check the roadmap read in Step 1:
+   - If the Change's Phase does **not yet** have a「Change 拆分」table, this is the first Change — you MUST add the table now
+   - Update `openspec/specs/roadmap/spec.md`:
+     - Add a「Change 拆分」section under the Phase with all planned Changes, their covered deliverables, and status
+     - Update Phase status from `planning` → `active`
+     - Update the milestone summary table accordingly
+   - If the Phase already has a「Change 拆分」table, add the new Change to it if not already listed
+
+   **IMPORTANT**: This step is required by roadmap-policy §5.5 and §6. Do NOT skip it.
+
+5. **Get the artifact build order**
    ```bash
    openspec status --change "<name>" --json
    ```
@@ -47,7 +68,7 @@ When ready to implement, run /opsx:apply
    - `applyRequires`: array of artifact IDs needed before implementation (e.g., `["tasks"]`)
    - `artifacts`: list of all artifacts with their status and dependencies
 
-4. **Create artifacts in sequence until apply-ready**
+6. **Create artifacts in sequence until apply-ready**
 
    Use the **TodoWrite tool** to track progress through the artifacts.
 
@@ -79,7 +100,7 @@ When ready to implement, run /opsx:apply
       - Use **AskUserQuestion tool** to clarify
       - Then continue with creation
 
-5. **Show final status**
+7. **Show final status**
    ```bash
    openspec status --change "<name>"
    ```
