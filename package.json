@@ -4,11 +4,19 @@
   "private": true,
   "description": "个人多端助手 App，管理日程/待办/快速记录，支持多端实时同步",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "desktop:dev": "pnpm --filter @mya/desktop dev",
+    "desktop:build": "pnpm --filter @mya/desktop build"
   },
   "engines": {
     "node": ">=18",
     "pnpm": ">=8"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild"
+    ]
   },
   "devDependencies": {
     "typescript": "^5.7.0"

@@ -2,11 +2,35 @@
   "name": "@mya/desktop",
   "version": "0.0.1",
   "private": true,
-  "description": "Mya Assistant 桌面端（Electron）- Phase 0 占位",
+  "description": "Mya Assistant 桌面端（Electron）",
+  "main": "./out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
-    "@mya/shared": "workspace:*"
+    "@electron-toolkit/utils": "^4.0.0",
+    "@mya/shared": "workspace:*",
+    "@radix-ui/react-slot": "^1.2.4",
+    "@supabase/supabase-js": "^2.49.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.510.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.5.0",
+    "tailwind-merge": "^3.2.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
-    "typescript": "^5.7.0"
+    "@tailwindcss/vite": "^4.1.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^4.4.0",
+    "electron": "^35.0.0",
+    "electron-vite": "^3.0.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.8.0"
   }
 }
