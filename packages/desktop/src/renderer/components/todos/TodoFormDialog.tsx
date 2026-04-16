@@ -39,7 +39,7 @@ export function TodoFormDialog({ open, onOpenChange, editTodo }: TodoFormDialogP
   const [note, setNote] = useState('')
   const [dueDate, setDueDate] = useState<Date | undefined>(undefined)
   const [priority, setPriority] = useState<TodoPriority>(0)
-  const [parentId, setParentId] = useState<string>('')
+  const [parentId, setParentId] = useState<string>('none')
   const [titleError, setTitleError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [calendarOpen, setCalendarOpen] = useState(false)
@@ -59,13 +59,13 @@ export function TodoFormDialog({ open, onOpenChange, editTodo }: TodoFormDialogP
         setNote(editTodo.note ?? '')
         setDueDate(editTodo.due_date ? new Date(editTodo.due_date) : undefined)
         setPriority(editTodo.priority)
-        setParentId(editTodo.parent_id ?? '')
+        setParentId(editTodo.parent_id ?? 'none')
       } else {
         setTitle('')
         setNote('')
         setDueDate(undefined)
         setPriority(0)
-        setParentId('')
+        setParentId('none')
       }
       setTitleError('')
     }
@@ -94,7 +94,7 @@ export function TodoFormDialog({ open, onOpenChange, editTodo }: TodoFormDialogP
           note: note.trim() || undefined,
           due_date: dueDateStr,
           priority,
-          parent_id: parentId || undefined,
+          parent_id: parentId !== 'none' ? parentId : undefined,
         })
       }
       onOpenChange(false)
@@ -209,7 +209,7 @@ export function TodoFormDialog({ open, onOpenChange, editTodo }: TodoFormDialogP
                   <SelectValue placeholder="无（顶级待办）" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">无（顶级待办）</SelectItem>
+                  <SelectItem value="none">无（顶级待办）</SelectItem>
                   {availableParents.map((t) => (
                     <SelectItem key={t.id} value={t.id}>
                       {t.title}
